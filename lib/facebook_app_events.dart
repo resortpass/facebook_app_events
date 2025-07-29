@@ -167,7 +167,7 @@ class FacebookAppEvents {
   ///
   /// See: https://developers.facebook.com/docs/reference/androidsdk/current/facebook/com/facebook/appevents/appeventsconstants.html/#eventnameviewedcontent
   Future<void> logViewContent({
-    Map<String, dynamic>? content,
+    List<Map<String, dynamic>>? content,
     String? id,
     String? type,
     String? currency,
@@ -176,7 +176,7 @@ class FacebookAppEvents {
     return logEvent(
       name: eventNameViewedContent,
       parameters: {
-        paramNameContent: content != null ? json.encode(content) : null,
+        paramNameContent: content,
         paramNameContentId: id,
         paramNameContentType: type,
         paramNameCurrency: currency,
@@ -189,7 +189,7 @@ class FacebookAppEvents {
   ///
   /// See: https://developers.facebook.com/docs/reference/androidsdk/current/facebook/com/facebook/appevents/appeventsconstants.html/#eventnameaddedtocart
   Future<void> logAddToCart({
-    Map<String, dynamic>? content,
+    List<Map<String, dynamic>>? content,
     required String id,
     required String type,
     required String currency,
@@ -198,7 +198,7 @@ class FacebookAppEvents {
     return logEvent(
       name: eventNameAddedToCart,
       parameters: {
-        paramNameContent: content != null ? json.encode(content) : null,
+        paramNameContent: content,
         paramNameContentId: id,
         paramNameContentType: type,
         paramNameCurrency: currency,
@@ -275,11 +275,13 @@ class FacebookAppEvents {
     String? contentId,
     int? numItems,
     bool paymentInfoAvailable = false,
+    List<Map<String, dynamic>>? content,
   }) {
     return logEvent(
       name: eventNameInitiatedCheckout,
       valueToSum: totalPrice,
       parameters: {
+        paramNameContent: content,
         paramNameContentType: contentType,
         paramNameContentId: contentId,
         paramNameNumItems: numItems,
