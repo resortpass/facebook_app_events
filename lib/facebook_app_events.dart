@@ -176,7 +176,7 @@ class FacebookAppEvents {
     return logEvent(
       name: eventNameViewedContent,
       parameters: {
-        paramNameContent: content,
+        paramNameContent: content != null ? jsonEncode(content) : null,
         paramNameContentId: id,
         paramNameContentType: type,
         paramNameCurrency: currency,
@@ -198,7 +198,7 @@ class FacebookAppEvents {
     return logEvent(
       name: eventNameAddedToCart,
       parameters: {
-        paramNameContent: content,
+        paramNameContent: content != null ? jsonEncode(content) : null,
         paramNameContentId: id,
         paramNameContentType: type,
         paramNameCurrency: currency,
@@ -260,6 +260,9 @@ class FacebookAppEvents {
     required String currency,
     Map<String, dynamic>? parameters,
   }) {
+    if (parameters != null && parameters.containsKey(paramNameContent)) {
+      parameters[paramNameContent] = jsonEncode(parameters[paramNameContent]);
+    }
     final args = <String, dynamic>{
       'amount': amount,
       'currency': currency,
@@ -281,7 +284,7 @@ class FacebookAppEvents {
       name: eventNameInitiatedCheckout,
       valueToSum: totalPrice,
       parameters: {
-        paramNameContent: content,
+        paramNameContent: content != null ? jsonEncode(content) : null,
         paramNameContentType: contentType,
         paramNameContentId: contentId,
         paramNameNumItems: numItems,
