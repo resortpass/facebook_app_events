@@ -172,15 +172,22 @@ class FacebookAppEvents {
     String? type,
     String? currency,
     double? price,
+    Map<String, dynamic>? customParameters,
   }) {
+    final parameters = <String, dynamic>{
+      paramNameContent: content != null ? jsonEncode(content) : null,
+      paramNameContentId: id,
+      paramNameContentType: type,
+      paramNameCurrency: currency,
+    };
+
+    if (customParameters != null) {
+      parameters.addAll(customParameters);
+    }
+
     return logEvent(
       name: eventNameViewedContent,
-      parameters: {
-        paramNameContent: content != null ? jsonEncode(content) : null,
-        paramNameContentId: id,
-        paramNameContentType: type,
-        paramNameCurrency: currency,
-      },
+      parameters: parameters,
       valueToSum: price,
     );
   }
@@ -190,19 +197,27 @@ class FacebookAppEvents {
   /// See: https://developers.facebook.com/docs/reference/androidsdk/current/facebook/com/facebook/appevents/appeventsconstants.html/#eventnameaddedtocart
   Future<void> logAddToCart({
     List<Map<String, dynamic>>? content,
+    Map<String, dynamic>? customParameters,
     required String id,
     required String type,
     required String currency,
     required double price,
   }) {
+
+    final parameters = <String, dynamic>{
+      paramNameContent: content != null ? jsonEncode(content) : null,
+      paramNameContentId: id,
+      paramNameContentType: type,
+      paramNameCurrency: currency,
+    };
+
+    if (customParameters != null) {
+      parameters.addAll(customParameters);
+    }
+
     return logEvent(
       name: eventNameAddedToCart,
-      parameters: {
-        paramNameContent: content != null ? jsonEncode(content) : null,
-        paramNameContentId: id,
-        paramNameContentType: type,
-        paramNameCurrency: currency,
-      },
+      parameters: parameters,
       valueToSum: price,
     );
   }
@@ -279,19 +294,26 @@ class FacebookAppEvents {
     int? numItems,
     bool paymentInfoAvailable = false,
     List<Map<String, dynamic>>? content,
+    Map<String, dynamic>? customParameters,
   }) {
+    final parameters = <String, dynamic>{
+      paramNameContent: content != null ? jsonEncode(content) : null,
+      paramNameContentType: contentType,
+      paramNameContentId: contentId,
+      paramNameNumItems: numItems,
+      paramNameCurrency: currency,
+      paramNamePaymentInfoAvailable:
+      paymentInfoAvailable ? paramValueYes : paramValueNo,
+    };
+
+    if (customParameters != null) {
+      parameters.addAll(customParameters);
+    }
+
     return logEvent(
       name: eventNameInitiatedCheckout,
       valueToSum: totalPrice,
-      parameters: {
-        paramNameContent: content != null ? jsonEncode(content) : null,
-        paramNameContentType: contentType,
-        paramNameContentId: contentId,
-        paramNameNumItems: numItems,
-        paramNameCurrency: currency,
-        paramNamePaymentInfoAvailable:
-            paymentInfoAvailable ? paramValueYes : paramValueNo,
-      },
+      parameters: parameters
     );
   }
 
